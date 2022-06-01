@@ -22,7 +22,7 @@ NAME = philo
 
 Header = include/philo.h
 
-SRC = philo.c tools.c get_time.c routine.c
+SRC = Mandatory/philo.c Mandatory/tools.c Mandatory/get_time.c Mandatory/routine.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -30,8 +30,8 @@ all : Intro $(NAME)
 
 %.o : %.c
 	$(CC)  -c $< -o $@
-$(NAME) :
-	$(CC) $(SRC) -o $(NAME)
+$(NAME) : $(OBJ)
+	$(CC) $(OBJ) -o $(NAME)
 
 clean :
 	rm -f $(OBJ)
@@ -42,10 +42,9 @@ fclean : clean
 re : fclean all
 
 push :
-	echo "Please Enter The Name Of File\n";read files
-	git add $$read_files
-	echo "Please Enter The Commite Message\n";read Commit
-	git commit -m "$$Commit"
+	@echo "\x1b[32m Please Enter The Name Of File\n";read files;git add $$files
+	@echo "Please Enter The Commite Message\n \x1b[0m";read Commit;git commit -m "$$Commit"
+	@git push
 
 Intro :
 		@echo "\x1b[32m $$Intro \x1b[0m"

@@ -28,7 +28,10 @@ int  ft_isdigit(int c);
 
 // parcing Functions
 void      parcing(int ac, char **av, t_philo *ptr);
-time_t    get_time(void);
+
+// time functions
+time_t   get_time_of_status(void);
+time_t  get_time_of_now(void);
 
 // routine function
 void    *routine(void *arg);
@@ -37,4 +40,5 @@ void taking_the_right_fork(t_ph_in *node);
 void taking_the_left_fork(t_ph_in *node);
 void eating(t_ph_in *node);
 void sleeping(t_ph_in *node);
+void thinking(t_ph_in *node);
 #endif

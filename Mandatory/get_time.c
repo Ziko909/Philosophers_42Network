@@ -6,11 +6,11 @@
 /*   By: zaabou <zaabou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 17:33:04 by zaabou            #+#    #+#             */
-/*   Updated: 2022/06/01 17:02:16 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/06/01 18:49:53 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/philo.h"
+#include "../include/philo.h"
 
 time_t  get_time_of_status(void)
 {

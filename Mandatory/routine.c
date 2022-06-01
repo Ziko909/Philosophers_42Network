@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/philo.h"
+#include "../include/philo.h"
 void	taking_the_right_fork(t_ph_in *node)
 {
 	pthread_mutex_lock(&(node->forks));
