@@ -44,7 +44,7 @@ re : fclean all
 push :
 	@echo "\x1b[32m Please Enter The Name Of File\n";read files;git add $$files
 	@echo "Please Enter The Commite Message\n \x1b[0m";read Commit;git commit -m "$$Commit"
-	@git push
+	@git -f push
 
 Intro :
 		@echo "\x1b[32m $$Intro \x1b[0m"
