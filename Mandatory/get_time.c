@@ -6,7 +6,7 @@
 /*   By: zaabou <zaabou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 17:33:04 by zaabou            #+#    #+#             */
-/*   Updated: 2022/06/01 18:49:53 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/06/06 00:55:02 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,19 @@ time_t  get_time_of_status(void)
         s_time =  (tv.tv_sec * 1000  + tv.tv_usec / 1000);
     return (s_time - f_time);
 }
+
 time_t  get_time_of_now(void)
 {
     struct timeval  tv;
     gettimeofday(&tv, NULL);
     return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
+void    ft_usleep(time_t sleep_time)
+{
+    time_t  starting;
+    starting = get_time_of_now();
+
+    while (sleep_time + starting > get_time_of_now())
+            usleep(50);    
 }

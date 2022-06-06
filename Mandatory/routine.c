@@ -14,39 +14,43 @@
 void	taking_the_right_fork(t_ph_in *node)
 {
 	pthread_mutex_lock(&(node->forks));
+	pthread_mutex_lock(&(node->ptr_s->writing_mutex));
 	printf("%ld %d has  taken the right fork\n", get_time_of_status(), node->id);
+	pthread_mutex_unlock(&(node->ptr_s->writing_mutex));
 }
 
 void	taking_the_left_fork(t_ph_in *node)
 {
-	struct	timeval  tv;
-	if((node->id % 2))
-		pthread_mutex_lock(&(node->next->forks));
-	else
-		pthread_mutex_lock(&(node->prev->forks));
+	pthread_mutex_lock(&(node->next->forks));
+	pthread_mutex_lock(&(node->ptr_s->writing_mutex));
 	printf("%ld %d has  taken the left fork\n", get_time_of_status(), node->id);
-	gettimeofday(&tv, NULL);
+	pthread_mutex_unlock(&(node->ptr_s->writing_mutex));
 }
 
 void	eating(t_ph_in *node)
 {
+	pthread_mutex_lock(&(node->ptr_s->writing_mutex));
 	printf("%ld %d is eating\n",get_time_of_status(), node->id);
+	pthread_mutex_unlock(&(node->ptr_s->writing_mutex));
 	node->died = get_time_of_now();
-	usleep (node->ptr_s->t_to_eat * 1000);
+	ft_usleep(node->ptr_s->t_to_eat);
 	pthread_mutex_unlock(&(node->forks));
-	if((node->id % 2))
-		pthread_mutex_unlock(&(node->next->forks));
-	else
-		pthread_mutex_unlock(&(node->prev->forks));
+	pthread_mutex_unlock(&(node->next->forks));
+	if (node->ptr_s->ac == 6)
+		node->ptr_s->n_e++;
 }
 
 void	sleeping(t_ph_in *node)
 {
+	pthread_mutex_lock(&(node->ptr_s->writing_mutex));
 	printf("%ld %d  is sleeping\n",get_time_of_status(), node->id);
-	usleep (node->ptr_s->t_to_sleap * 1000);
+	pthread_mutex_unlock(&(node->ptr_s->writing_mutex));
+	ft_usleep (node->ptr_s->t_to_sleap);
 }
 
 void	thinking(t_ph_in *node)
 {
+	pthread_mutex_lock(&(node->ptr_s->writing_mutex));
 	printf("%ld %d  is thinking\n",get_time_of_status(), node->id);
+	pthread_mutex_unlock(&(node->ptr_s->writing_mutex));
 }
