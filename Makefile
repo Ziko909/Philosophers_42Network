@@ -22,7 +22,7 @@ NAME = philo
 
 Header = include/philo.h
 
-SRC = Mandatory/philo.c Mandatory/tools.c Mandatory/get_time.c Mandatory/routine.c
+SRC = Mandatory/philo.c Mandatory/parcing.c Mandatory/get_time.c Mandatory/routine.c
 
 OBJ = $(SRC:.c=.o)
 

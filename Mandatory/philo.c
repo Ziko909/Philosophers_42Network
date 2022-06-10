@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zaabou <zaabou@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/10 13:11:01 by zaabou            #+#    #+#             */
+/*   Updated: 2022/06/10 18:59:28 by zaabou           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/philo.h"
 
 void	*routine(void *arg)
@@ -17,25 +28,6 @@ void	*routine(void *arg)
 		thinking(node);
 	}
 	return (NULL);
-}
-
-int	parcing(int ac, char **av, t_philo *ptr)
-{
-	ptr->ac = ac;
-	ptr->n_philos = ft_atoi(av[1]);
-	ptr->t_to_die = ft_atoi(av[2]);
-	ptr->t_to_eat = ft_atoi(av[3]);
-	ptr->t_to_sleap = ft_atoi(av[4]);
-	if (ac == 6)
-	{
-		ptr->n_must_eat = ft_atoi(av[5]);
-		if (ptr->n_must_eat <= 0)
-			return (0);
-	}
-	if (ptr->n_philos <= 0 || ptr->t_to_die <= 0
-		|| ptr->t_to_eat <= 0 || ptr->t_to_sleap <= 0)
-		return (0);
-	return (1);
 }
 
 t_ph_in	*creat_thread(t_ph_in *node)
@@ -84,7 +76,6 @@ t_ph_in	*set_of_philo_info(t_philo *ptr)
 			return (NULL);
 		temp->next = node;
 		temp->ptr_s = ptr;
-		temp->died = get_time_of_now();
 		if (pthread_mutex_init(&(temp->forks), NULL))
 			return (NULL);
 	}
@@ -94,6 +85,7 @@ t_ph_in	*set_of_philo_info(t_philo *ptr)
 bool	check_if_dead(t_ph_in *node)
 {
 	t_ph_in	*tmp;
+	time_t	died_time;
 
 	tmp = node;
 	if (!tmp)
@@ -102,9 +94,10 @@ bool	check_if_dead(t_ph_in *node)
 	{
 		if (get_time_of_now() - tmp->died >= tmp->ptr_s->t_to_die)
 		{
+			died_time = get_time_of_status();
 			if (pthread_mutex_lock(&(tmp->ptr_s->writing_mutex)))
 				return (false);
-			printf("%ld %d died\n", get_time_of_status(), tmp->id);
+			printf("%ld %d died\n", died_time, tmp->id);
 			break ;
 		}
 		if (tmp->ptr_s->ac == 6
