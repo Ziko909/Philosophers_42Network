@@ -1,10 +1,12 @@
 #include "../include/philo.h"
 
-void    *routine(void *arg)
+void	*routine(void *arg)
 {
-	t_ph_in *node = (t_ph_in *)arg;
+	t_ph_in	*node;
+
+	node = (t_ph_in *)arg;
 	if (!(node->id % 2))
-		usleep(500);
+		usleep(100);
 	node->died = get_time_of_now();
 	while (1)
 	{
@@ -16,6 +18,7 @@ void    *routine(void *arg)
 	}
 	return (NULL);
 }
+
 int	parcing(int ac, char **av, t_philo *ptr)
 {
 	ptr->ac = ac;
@@ -29,22 +32,46 @@ int	parcing(int ac, char **av, t_philo *ptr)
 		if (ptr->n_must_eat <= 0)
 			return (0);
 	}
-	if (ptr->n_philos <= 0 || ptr->t_to_die <= 0 ||
-	 ptr->t_to_eat <= 0 || ptr->t_to_sleap <= 0)
-	 return (0);
+	if (ptr->n_philos <= 0 || ptr->t_to_die <= 0
+		|| ptr->t_to_eat <= 0 || ptr->t_to_sleap <= 0)
+		return (0);
 	return (1);
 }
-void    ft_creat_thread(t_philo *ptr)
+
+t_ph_in	*creat_thread(t_ph_in *node)
 {
-	t_ph_in *node;
-	t_ph_in *temp;
-	t_ph_in *head;
-	
-	int i = 1;
+	t_ph_in	*tmp;
+	int		n_philos;
+
+	tmp = node;
+	n_philos = tmp->ptr_s->n_philos;
+	if (!tmp)
+		return (NULL);
+	while (n_philos-- > 0)
+	{
+		if (pthread_create(&tmp->th, NULL, routine, (void *) tmp))
+			return (NULL);
+		if (pthread_detach(tmp->th))
+			return (NULL);
+		tmp = tmp->next;
+	}
+	return (node);
+}
+
+t_ph_in	*set_of_philo_info(t_philo *ptr)
+{
+	t_ph_in	*node;
+	t_ph_in	*temp;
+	t_ph_in	*head;
+	int		i;
+
+	i = 0;
 	ptr->n_e = 0;
 	node = malloc(sizeof(t_ph_in));
+	if (!node)
+		return (NULL);
 	head = node;
-	while (i <=  ptr->n_philos)
+	while (++i <= ptr->n_philos)
 	{
 		node->id = i;
 		temp = node;
@@ -53,37 +80,49 @@ void    ft_creat_thread(t_philo *ptr)
 		else
 			node->next = head;
 		node = node->next;
+		if (!node)
+			return (NULL);
 		temp->next = node;
-		node->prev = temp;
 		temp->ptr_s = ptr;
-		pthread_mutex_init(&(temp->forks), NULL);
-		i++; 
+		temp->died = get_time_of_now();
+		if (pthread_mutex_init(&(temp->forks), NULL))
+			return (NULL);
 	}
-	temp = head;
-	while (--i > 0)
+	return (head);
+}
+
+bool	check_if_dead(t_ph_in *node)
+{
+	t_ph_in	*tmp;
+
+	tmp = node;
+	if (!tmp)
+		return (false);
+	while (tmp)
 	{
-		pthread_create(&head->th, NULL, routine, (void *) head);
-		pthread_detach(head->th);
-		head = head->next;
-	}
-	while(temp)
-	{
-		if (temp->ptr_s->ac == 6 && temp->ptr_s->n_e == temp->ptr_s->n_philos * temp->ptr_s->n_must_eat)
+		if (get_time_of_now() - tmp->died >= tmp->ptr_s->t_to_die)
 		{
-			pthread_mutex_lock(&(ptr->writing_mutex));
-			break;
+			if (pthread_mutex_lock(&(tmp->ptr_s->writing_mutex)))
+				return (false);
+			printf("%ld %d died\n", get_time_of_status(), tmp->id);
+			break ;
 		}
-		if (get_time_of_now() - temp->died > ptr->t_to_die)
+		if (tmp->ptr_s->ac == 6
+			&& tmp->ptr_s->n_e
+			== (tmp->ptr_s->n_philos * tmp->ptr_s->n_must_eat))
 		{
-			pthread_mutex_lock(&(ptr->writing_mutex));
-			printf("%ld %d died\n", get_time_of_status(), node->id);
+			if (pthread_mutex_lock(&(tmp->ptr_s->writing_mutex)))
+				return (false);
 			break ;
 		}
 	}
+	return (true);
 }
-int main(int ac, char **av)
+
+int	main(int ac, char **av)
 {
-	t_philo *ptr;
+	t_philo	*ptr;
+
 	if (ac == 5 || ac == 6)
 	{
 		ptr = malloc(sizeof(t_philo));
@@ -91,6 +130,7 @@ int main(int ac, char **av)
 			return (0);
 		if (pthread_mutex_init(&(ptr->writing_mutex), NULL))
 			return (0);
-		ft_creat_thread(ptr);
+		if (check_if_dead(creat_thread(set_of_philo_info(ptr))) == false)
+			return (0);
 	}
 }

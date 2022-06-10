@@ -9,8 +9,8 @@
 /*   Updated: 2022/05/31 13:36:35 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../include/philo.h"
+
 void	taking_the_right_fork(t_ph_in *node)
 {
 	pthread_mutex_lock(&(node->forks));
@@ -30,7 +30,7 @@ void	taking_the_left_fork(t_ph_in *node)
 void	eating(t_ph_in *node)
 {
 	pthread_mutex_lock(&(node->ptr_s->writing_mutex));
-	printf("%ld %d is eating\n",get_time_of_status(), node->id);
+	printf("%ld %d is eating\n", get_time_of_status(), node->id);
 	pthread_mutex_unlock(&(node->ptr_s->writing_mutex));
 	node->died = get_time_of_now();
 	ft_usleep(node->ptr_s->t_to_eat);
@@ -43,7 +43,7 @@ void	eating(t_ph_in *node)
 void	sleeping(t_ph_in *node)
 {
 	pthread_mutex_lock(&(node->ptr_s->writing_mutex));
-	printf("%ld %d  is sleeping\n",get_time_of_status(), node->id);
+	printf("%ld %d  is sleeping\n", get_time_of_status(), node->id);
 	pthread_mutex_unlock(&(node->ptr_s->writing_mutex));
 	ft_usleep (node->ptr_s->t_to_sleap);
 }
@@ -51,6 +51,6 @@ void	sleeping(t_ph_in *node)
 void	thinking(t_ph_in *node)
 {
 	pthread_mutex_lock(&(node->ptr_s->writing_mutex));
-	printf("%ld %d  is thinking\n",get_time_of_status(), node->id);
+	printf("%ld %d  is thinking\n", get_time_of_status(), node->id);
 	pthread_mutex_unlock(&(node->ptr_s->writing_mutex));
 }
