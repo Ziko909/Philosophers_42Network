@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parcing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaabou <zaabou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@1337.ma>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/10 13:14:02 by zaabou            #+#    #+#             */
-/*   Updated: 2022/06/10 13:17:50 by zaabou           ###   ########.fr       */
+/*   Created: 2022/06/11 20:10:45 by zaabou            #+#    #+#             */
+/*   Updated: 2022/06/11 20:10:53 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../include/philo.h"
@@ -35,21 +35,21 @@ int	ft_atoi(const char *str)
 	return (t);
 }
 
-int	parcing(int ac, char **av, t_philo *ptr)
+int	parcing(int ac, char **av, t_ph_in *head)
 {
-	ptr->ac = ac;
-	ptr->n_philos = ft_atoi(av[1]);
-	ptr->t_to_die = ft_atoi(av[2]);
-	ptr->t_to_eat = ft_atoi(av[3]);
-	ptr->t_to_sleap = ft_atoi(av[4]);
+	head->ptr_s->ac = ac;
+	head->ptr_s->n_philos = ft_atoi(av[1]);
+	head->ptr_s->t_to_die = ft_atoi(av[2]);
+	head->ptr_s->t_to_eat = ft_atoi(av[3]);
+	head->ptr_s->t_to_sleap = ft_atoi(av[4]);
 	if (ac == 6)
 	{
-		ptr->n_must_eat = ft_atoi(av[5]);
-		if (ptr->n_must_eat <= 0)
+		head->ptr_s->n_must_eat = ft_atoi(av[5]);
+		if (head->ptr_s->n_must_eat <= 0)
 			return (0);
 	}
-	if (ptr->n_philos <= 0 || ptr->t_to_die <= 0
-		|| ptr->t_to_eat <= 0 || ptr->t_to_sleap <= 0)
+	if (head->ptr_s->n_philos <= 0 || head->ptr_s->t_to_die <= 0
+		|| head->ptr_s->t_to_eat <= 0 || head->ptr_s->t_to_sleap <= 0)
 		return (0);
 	return (1);
 }

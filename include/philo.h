@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaabou <zaabou@1337.ma>                    +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/10 18:25:06 by zaabou            #+#    #+#             */
-/*   Updated: 2022/06/10 19:00:51 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/06/11 17:37:02 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 # include <pthread.h>
@@ -24,6 +25,8 @@ typedef struct philo{
 	int				n_must_eat;
 	int				ac;
 	int				n_e;
+	int				n_of_alloc;
+	int				simulation_state;
 	pthread_mutex_t	writing_mutex;
 }t_philo;
 
@@ -37,25 +40,22 @@ typedef struct philos_info{
 	struct philos_info	*prev;
 }t_ph_in;
 
-// helpful Functions
-int	ft_atoi(const char *str);
-int	ft_isdigit(int c);
-// main thread Functions
-t_ph_in	*set_of_philo_info(t_philo *ptr);
+int		ft_atoi(const char *str);
+int		ft_isdigit(int c);
+t_ph_in	*set_of_philo_info(t_ph_in *head);
 t_ph_in	*ft_creat_thread(t_ph_in *node);
 bool	check_if_dead(t_ph_in *node);
-// parcing Functions
-int		parcing(int ac, char **av, t_philo *ptr);
-// time functions
+int		parcing(int ac, char **av, t_ph_in *head);
 time_t	get_time_of_status(void);
 time_t	get_time_of_now(void);
 void	ft_usleep(time_t sleep_time);
-// routine function
 void	*routine(void *arg);
-// habits Functions
-void	taking_the_right_fork(t_ph_in *node);
-void	taking_the_left_fork(t_ph_in *node);
-void	eating(t_ph_in *node);
-void	sleeping(t_ph_in *node);
-void	thinking(t_ph_in *node);
+bool	taking_the_right_fork(t_ph_in *node);
+bool	taking_the_left_fork(t_ph_in *node);
+bool	eating(t_ph_in *node);
+bool	sleeping(t_ph_in *node);
+bool	thinking(t_ph_in *node);
+t_ph_in	*initialize_data(t_ph_in *head);
+int		ft_cleaning_of_memmory(t_ph_in *head);
+
 #endif

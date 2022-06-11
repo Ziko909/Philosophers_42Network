@@ -22,16 +22,16 @@ NAME = philo
 
 Header = include/philo.h
 
-SRC = Mandatory/philo.c Mandatory/parcing.c Mandatory/get_time.c Mandatory/routine.c
+SRC = Mandatory/philo.c Mandatory/parcing.c Mandatory/get_time.c Mandatory/routine.c Mandatory/memory_management.c
 
 OBJ = $(SRC:.c=.o)
 
 all : Intro $(NAME)
 
 %.o : %.c
-	$(CC)  -c $< -o $@
+	$(CC) $(CCFLAGS) -c $< -o $@
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CC) $(CCFLAGS) $(OBJ) -o $(NAME)
 
 clean :
 	rm -f $(OBJ)
