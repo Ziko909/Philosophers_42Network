@@ -9,15 +9,16 @@
 /*   Updated: 2022/06/13 20:41:19 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "../include/philo_bonus.h"
 
 int	ft_isdigit(int c)
 {
 	return (c >= 48 && c <= 57);
 }
 
-int	ft_atoi(const char *str)
+time_t	ft_atoi(const char *str)
 {
-	long int		t;
+	time_t			t;
 	int				i;
 	int				signe;
 

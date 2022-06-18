@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory_management.c                                :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zaabou <zaabou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/11 20:27:28 by zaabou            #+#    #+#             */
-/*   Updated: 2022/06/13 20:37:01 by zaabou           ###   ########.fr       */
+/*   Created: 2022/06/11 20:10:23 by zaabou            #+#    #+#             */
+/*   Updated: 2022/06/12 16:58:25 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "../include/philo.h"
 
-
-t_philo	*initialize_data(t_ph_in *data_ptr)
+bool	philo_died(t_ph_in *node, time_t died_time)
 {
-	data_ptr = malloc(sizeof(t_philo));
-	if (!data->ptr_s)
-		return (NULL);
-	data_ptr->pid_table = NULL;
-	data_ptr->simulation_state = 1;
-	return (data_ptr);
+	node->ptr_s->simulation_state = 0;
+	ft_usleep(42);
+	printf("%ld %d died\n", died_time, node->id);
+	return (true);
 }
 
-int	ft_cleaning_of_memmory(t_philo *data_ptr)
+void	ft_unlock_mutex(t_ph_in *node)
 {
-	if (data_ptr->pid_table)
-		free(data_ptr->pid_table);
-	if (data_ptr)
-		free(data_ptr);
-	return (1);
+	pthread_mutex_unlock(&node->forks);
 }

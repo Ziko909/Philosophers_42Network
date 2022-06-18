@@ -1,1 +1,1 @@
-# Philosophers_42Network
+Philosophers (Unix Project)

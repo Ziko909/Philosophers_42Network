@@ -9,7 +9,7 @@
 /*   Updated: 2022/06/13 13:33:41 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../include/philo.h"
+#include "../include/philo_bonus.h"
 
 time_t	get_time_of_status(void)
 {
@@ -43,5 +43,5 @@ void	ft_usleep(time_t sleep_time)
 
 	starting = get_time_of_now();
 	while (sleep_time + starting > get_time_of_now())
-		usleep(1);
+		usleep(42);
 }

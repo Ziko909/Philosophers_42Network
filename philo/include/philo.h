@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zaabou <zaabou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/13 14:11:45 by zaabou            #+#    #+#             */
-/*   Updated: 2022/06/13 15:42:34 by zaabou           ###   ########.fr       */
+/*   Created: 2022/06/10 18:25:06 by zaabou            #+#    #+#             */
+/*   Updated: 2022/06/12 16:20:16 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,10 @@
 # include <stdbool.h>
 
 typedef struct philo{
-	pthread_t		th;
-	time_t			died;
-	int				*pid_table;
-	int				id;
 	int				n_philos;
-	int				t_to_die;
-	int				t_to_eat;
-	int				t_to_sleap;
+	time_t			t_to_die;
+	time_t			t_to_eat;
+	time_t			t_to_sleap;
 	int				n_must_eat;
 	int				ac;
 	int				n_e;
@@ -33,27 +29,39 @@ typedef struct philo{
 	int				simulation_state;
 }t_philo;
 
+typedef struct philos_info{
+	pthread_t			th;
+	int					id;
+	time_t				died;
+	pthread_mutex_t		forks;
+	t_philo				*ptr_s;
+	struct philos_info	*next;
+	struct philos_info	*prev;
+}t_ph_in;
+
 // parcing Functions
-int		ft_atoi(const char *str);
+time_t	ft_atoi(const char *str);
 int		ft_isdigit(int c);
-int		parcing(int ac, char **av, t_philo *data_ptr);
+int		parcing(int ac, char **av, t_ph_in *head);
 // main_thread Functions
-t_ph_in	*set_of_philo_info(t_philo *data_ptr);
-t_ph_in	*ft_creat_thread(t_philo *data_ptr);
-bool	ft_check_if_dead(t_philo *data_ptr);
-bool	philo_died(t_philo *data_ptr, time_t died_time);
+t_ph_in	*set_of_philo_info(t_ph_in *head);
+t_ph_in	*ft_creat_thread(t_ph_in *node);
+bool	ft_check_if_dead(t_ph_in *node);
+bool	philo_died(t_ph_in *node, time_t died_time);
 // Time Functions 
 time_t	get_time_of_status(void);
 time_t	get_time_of_now(void);
 void	ft_usleep(time_t sleep_time);
 // Habits Functions 
 void	*routine(void *arg);
-bool	taking_the_right_fork(t_philo *data_ptr);
-bool	taking_the_left_fork(t_philo *data_ptr);
-bool	eating(t_philo *data_ptr);
-bool	sleeping(t_philo *data_ptr);
-bool	thinking(t_philo *data_ptr);
+bool	taking_the_right_fork(t_ph_in *node);
+bool	taking_the_left_fork(t_ph_in *node);
+bool	eating(t_ph_in *node);
+bool	sleeping(t_ph_in *node);
+bool	thinking(t_ph_in *node);
 // memory Management Functions
-t_philo	*initialize_data(t_philo *data_ptr);
-int		ft_cleaning_of_memmory(t_philo *data_ptr);
+t_ph_in	*initialize_data(t_ph_in *head);
+int		ft_cleaning_of_memmory(t_ph_in *head);
+// protect the data
+void	ft_unlock_mutex(t_ph_in *node);
 #endif
