@@ -35,9 +35,9 @@ bool	eating(t_ph_in *node)
 		return (ft_unlock_mutex(node), ft_unlock_mutex(node->next), false);
 	printf("%ld %d is eating\n", get_time_of_status(), node->id);
 	node->died = get_time_of_now();
+	ft_usleep(node->ptr_s->t_to_eat);
 	if (node->ptr_s->ac == 6)
 		node->ptr_s->n_e++;
-	ft_usleep(node->ptr_s->t_to_eat);
 	pthread_mutex_unlock(&(node->forks));
 	pthread_mutex_unlock(&(node->next->forks));
 	return (true);
